@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'hollymovies.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db2.sqlite3',
+        'NAME': BASE_DIR / 'moje_db.sqlite3',
     }
 }
 

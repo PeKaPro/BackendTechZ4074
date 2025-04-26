@@ -16,12 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from viewer.views import hello, hello2, hello3
+from viewer.views import hello, hello2, hello3, hello4
+
+from viewer.models import Genre, Movie
+
+admin.site.register(Genre)
+admin.site.register(Movie)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello', hello),
     path('hello2/<s>', hello2),
-    path('hello3', hello3)
+    path('ahoj', hello3),
+    path("hello45/<s0>", hello4)
 ]
 
