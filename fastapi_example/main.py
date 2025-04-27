@@ -12,6 +12,11 @@ def hello():
     return 'Hello World!'
 
 
+@app.post("/hello")
+def hello_post():
+    return 'Hello World!'
+
+
 @app.get("/hello_json")
 def hello_json():
     return {"message": 'Hello World!',
