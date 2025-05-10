@@ -1,13 +1,12 @@
-
 # Create your views here.
 
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView, ListView, FormView
+from django.views.generic import TemplateView, ListView, FormView, CreateView, UpdateView, DeleteView
 
-from viewer.forms import MovieForm
+from viewer.forms import MovieForm, MovieForm2, MovieFormCustom
 from viewer.models import Movie
 
 
@@ -17,6 +16,13 @@ def hello(request):
 
 def hello2(request, s):
     return HttpResponse(f'Hello {s} World!')
+
+
+"""
+http://centrum.cz/neco/neco_dalsiho?key1=value1&key2=value2
+http://centrum.cz/neco/neco_dalsiho?s=123
+
+"""
 
 
 def hello3(request):
@@ -43,7 +49,7 @@ def hello5(request, s0):
 
 
 def movies(request):
-    all_movies = Movie.objects.all().order_by("rating")
+    all_movies = Movie.objects.all()
     template_name = 'movies1.html'
     return render(
         request, template_name, {'movies': all_movies}
@@ -70,7 +76,67 @@ class MoviesView3(ListView):
 
 
 class MovieCreateView(FormView):
-    template_name = 'movies_create.html'
+    template_name = 'movies_form.html'
     form_class = MovieForm
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy("moje_filmy")
 
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        cleaned_data = form.cleaned_data
+
+        Movie.objects.create(
+            title=cleaned_data["title"],
+            genre=cleaned_data["genre"],
+            rating=cleaned_data["rating"],
+            released=cleaned_data["released"],
+            description=cleaned_data["description"],
+        )
+        return result
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
+
+
+class MovieCreateView2(CreateView):
+    template_name = 'movies_form.html'
+    form_class = MovieForm2
+    model = Movie
+    success_url = reverse_lazy("moje_filmy")
+
+
+class MovieUpdateView(UpdateView):
+    template_name = "movies_form.html"
+    model = Movie
+    form_class = MovieForm2
+    success_url = reverse_lazy("moje_filmy")
+
+
+class MovieDeleteView(DeleteView):
+    template_name = "movies_delete.html"
+    model = Movie
+    success_url = reverse_lazy("moje_filmy")
+
+
+
+class MovieCreateCustomView(FormView):
+    template_name = 'movies_form_nice.html'
+    form_class = MovieFormCustom
+    success_url = reverse_lazy("moje_filmy")
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        cleaned_data = form.cleaned_data
+
+        Movie.objects.create(
+            title=cleaned_data["title"],
+            genre=cleaned_data["genre"],
+            rating=cleaned_data["rating"],
+            released=cleaned_data["released"],
+            description=cleaned_data["description"],
+        )
+        return result
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
