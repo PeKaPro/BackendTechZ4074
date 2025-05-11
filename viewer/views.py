@@ -1,5 +1,10 @@
 # Create your views here.
 
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -8,6 +13,7 @@ from django.views.generic import TemplateView, ListView, FormView, CreateView, U
 
 from viewer.forms import MovieForm, MovieForm2, MovieFormCustom
 from viewer.models import Movie
+
 
 
 def hello(request):
@@ -32,10 +38,14 @@ def hello3(request):
 
 def hello4(request, s0):
     s1 = request.GET.get('s1', '')
+
+    data =  [s0, s1, 'beautiful', 'wonderful']
+    # data = [slovo.upper() for slovo in data]
+
     return render(
         request,
         template_name='hello.html',
-        context={'adjectives': [s0, s1, 'beautiful', 'wonderful']}
+        context={'adjectives': data}
     )
 
 
@@ -48,6 +58,7 @@ def hello5(request, s0):
     )
 
 
+@login_required
 def movies(request):
     all_movies = Movie.objects.all()
     template_name = 'movies1.html'
@@ -56,7 +67,7 @@ def movies(request):
     )
 
 
-class MoviesView1(View):
+class MoviesView1(LoginRequiredMixin, View):
     def get(self, request):
         all_movies = Movie.objects.all().order_by("rating")
         template_name = 'movies1.html'
@@ -65,12 +76,12 @@ class MoviesView1(View):
         )
 
 
-class MoviesView2(TemplateView):
+class MoviesView2(LoginRequiredMixin, TemplateView):
     template_name = 'movies1.html'
     extra_context = {"movies": Movie.objects.all().order_by("-rating")}
 
 
-class MoviesView3(ListView):
+class MoviesView3(LoginRequiredMixin, ListView):
     template_name = 'movies2.html'
     model = Movie
 

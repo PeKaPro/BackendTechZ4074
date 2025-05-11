@@ -1,13 +1,59 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container fixed">
-        <a class="navbar-brand" href="{% url 'moje_filmy' %}">HollyMovies</a>
+        <a class="navbar-brand" href="{% url 'movies' %}">HollyMovies</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="{% url 'moje_filmy' %}">Home</a>
+                <a class="nav-item nav-link active" href="{% url 'movies' %}">Home</a>
             </div>
         </div>
+
+        <div class="navbar-nav ml-auto">
+            <div class="nav-item dropdown">
+                <div class="dropdown-menu dropdown-menu-left">
+                    <a class="dropdown-item text-right" href="{% url 'movies' %}">movies</a>
+                    <a class="dropdown-item text-right" href="{% url 'movies_cbv1' %}">movies_cbv1</a>
+                    <a class="dropdown-item text-right" href="{% url 'movies_cbv2' %}">movies_cbv2</a>
+                    <a class="dropdown-item text-right" href="{% url 'movies_cbv3' %}">movies_cbv3</a>
+                </div>
+            </div>
+        </div>
+
+        <!--        <div class="collapse navbar-collapse ">-->
+        <!--            {% if request.user.is_authenticated %}-->
+        <!--            <p style="color:#ffffff">Uzivatel je prihlasen jako {{ request.user.username }}</p>-->
+        <!--            {% else %}-->
+        <!--            <p style="color:#ffffff">Uzivatel neni prihlasen</p>-->
+        <!--            {% endif %}-->
+        <!--        </div>-->
+
+        <div class="navbar-nav ml-auto">
+            <div class="nav-item dropdown">
+                {% if user.is_authenticated %}
+                <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+                    {% if user.first_name %}Hello, {{ user.first_name }}!
+                    {% else %}Hello, {{ user.username }}!{% endif %}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item text-right" href="{% url 'logout' %}">Logout</a>
+                    <a class="dropdown-item text-right" href="{% url 'movies' %}">movies</a>
+                    <a class="dropdown-item text-right" href="{% url 'movies_cbv1' %}">movies_cbv1</a>
+                    <a class="dropdown-item text-right" href="{% url 'movies_cbv2' %}">movies_cbv2</a>
+                    <a class="dropdown-item text-right" href="{% url 'movies_cbv3' %}">movies_cbv3</a>
+                </div>
+                {% else %}
+                <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+                    You are not logged in.
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item text-right" href="{% url 'login' %}">Login</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+
     </div>
 </nav>

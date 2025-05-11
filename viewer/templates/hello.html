@@ -4,8 +4,13 @@
     <h1>Welcome to HollyMovies!</h1>
     {% for adjective in adjectives %}
       {% if adjective != 'cruel' %}
-        <p>This is a {{ adjective }} world...</p>
+        <p>This is a {{ adjective|upper|lower }} world...</p>
       {% endif %}
     {% endfor %}
+
+    <p>Posledni: {{ adjectives|last }}</p>
+    <p>Prvni: {{ adjectives|first }}</p>
+    <p>Pocet elementu: {{ adjectives|length }}</p>
+
   </body>
 </html>

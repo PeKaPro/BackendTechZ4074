@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.contrib.auth.views import LoginView, LogoutView
+
 from viewer.views import (
     hello, hello2, hello3, hello4, hello5,
     movies, MoviesView1, MoviesView2, MoviesView3,
@@ -31,24 +33,26 @@ admin.site.register(Movie)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello', hello),
-    path('hello2/<s>', hello2),
-    path('ahoj', hello3),
-    path("hello4/<s0>", hello4),
-    path("hello5/<s0>", hello5),
-    path("moje_filmy2", movies, name="moje_filmy"),
-    path("movies_cbv1", MoviesView1.as_view()),
-    path("movies_cbv2", MoviesView2.as_view()),
-    path("movies_cbv3", MoviesView3.as_view()),
 
-    path("movie/create", MovieCreateView.as_view()),
+    path("accounts/login/", LoginView.as_view(template_name="accounts/login.html"), name="login"),
+    path("accounts/logout/", LogoutView.as_view(), name="logout"),
 
-    path("movie/create2", MovieCreateView2.as_view()),
+    path('hello', hello, name="hello"),
+    path('hello2/<s>', hello2, name="hello2"),
+    path('hello3', hello3, name="hello3"),
+    path("hello4/<s0>", hello4, name="hello4"),
+    path("hello5/<s0>", hello5, name="hello5"),
 
-    path("movie/update/<pk>", MovieUpdateView.as_view()),
+    path("movies/", movies, name="movies"),
+    path("movies_cbv1/", MoviesView1.as_view(), name="movies_cbv1"),
+    path("movies_cbv2/", MoviesView2.as_view(), name="movies_cbv2"),
+    path("movies_cbv3/", MoviesView3.as_view(), name="movies_cbv3"),
 
-    path("movie/delete/<pk>", MovieDeleteView.as_view()),
+    # path("movie/create_basic", MovieCreateView.as_view()),
+    # path("movie/create2", MovieCreateView2.as_view()),
 
-    path("movie/create_nice", MovieCreateCustomView.as_view()),
+    path("movie/create", MovieCreateCustomView.as_view(), name="movie_create"),
+    path("movie/update/<pk>", MovieUpdateView.as_view(), name="movie_update"),
+    path("movie/delete/<pk>", MovieDeleteView.as_view(), name="movie_delete"),
 ]
 
